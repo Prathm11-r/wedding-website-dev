@@ -53,3 +53,11 @@ pnpm-debug.log*
 .cache
 .turbo
 dist/
+
+# ─── Internal Backend Documentation, Migrations & Agent Context ───────────────
+docs/
+supabase/
+WEBSITE_CONTEXT.md
+WEBSITE_CHANGELOG.md
+.agents/
+
