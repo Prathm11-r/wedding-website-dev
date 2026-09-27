@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Git Workflow & Repository Rules
 
 - **Remote Repository**: `origin` is configured to `https://github.com/Prathm11-r/wedding-website-dev.git`
