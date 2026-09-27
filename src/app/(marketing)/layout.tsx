@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 function MarketingNavbar() {
   const navLinks = [
     { label: "Features",  href: "/#features" },
+    { label: "Templates", href: "/templates" },
     { label: "Themes & 3D Studio", href: "/#themes" },
-    { label: "Live RSVP Engine", href: "/#rsvp-preview" },
     { label: "Pricing",   href: "/pricing" },
   ];
 
@@ -56,17 +56,16 @@ function MarketingNavbar() {
         {/* Auth & Demo CTAs */}
         <div className="flex items-center gap-3">
           <Link
-            href="/wedding/sarah-and-james"
-            target="_blank"
-            className="hidden sm:inline-flex items-center text-xs font-semibold text-primary-deep px-3 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20"
+            href="/templates/chateau"
+            className="hidden sm:inline-flex items-center text-xs font-semibold text-primary-deep px-3.5 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20"
           >
-            Live Couple Preview ↗
+            Live Demo ↗
           </Link>
           <Button variant="ghost" size="sm" asChild>
             <Link href="/auth/login">Log in</Link>
           </Button>
           <Button size="sm" className="shadow-soft-md shadow-primary/20" asChild>
-            <Link href="/auth/signup">Get Started</Link>
+            <Link href="/wedding/new">Start Your Website</Link>
           </Button>
         </div>
       </nav>

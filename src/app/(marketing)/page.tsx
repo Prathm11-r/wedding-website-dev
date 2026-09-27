@@ -115,16 +115,16 @@ export default function MarketingHomePage() {
 
           {/* Primary Action Buttons */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" className="w-full sm:w-auto px-8 shadow-soft-xl shadow-primary/25" asChild>
-              <Link href="/auth/signup">
+            <Button size="lg" className="w-full sm:w-auto px-9 py-6 text-sm sm:text-base font-bold shadow-soft-xl shadow-primary/30" asChild>
+              <Link href="/wedding/new">
                 Start Creating Your Website
-                <ArrowRight className="h-4 w-4 ml-2" aria-hidden="true" />
+                <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto px-6 border-border/80 bg-white/60 hover:bg-white" asChild>
-              <Link href="/wedding/sarah-and-james" target="_blank">
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto px-8 py-6 text-sm sm:text-base font-semibold border-[#C9A96E]/50 shadow-soft-md" asChild>
+              <Link href="/templates/chateau">
                 <Eye className="h-4 w-4 mr-2 text-primary-deep" />
-                Explore Live Demo Site
+                Explore Live Demos
               </Link>
             </Button>
           </div>
@@ -227,11 +227,17 @@ export default function MarketingHomePage() {
                   </div>
                 </div>
 
-                <div className="p-8 pt-0">
-                  <Button variant="outline" className="w-full text-xs font-semibold" asChild>
-                    <Link href={`/wedding/sarah-and-james?theme=${theme.id}`}>
-                      Preview Theme Live
-                      <ArrowRight className="h-3.5 w-3.5 ml-2" />
+                <div className="p-8 pt-0 flex items-center gap-3">
+                  <Button variant="outline" className="flex-1 text-xs font-semibold py-5 border-border hover:bg-neutral-light" asChild>
+                    <Link href={`/templates/${theme.id}`}>
+                      <Eye className="h-3.5 w-3.5 mr-1.5 text-primary-deep" />
+                      Live Preview
+                    </Link>
+                  </Button>
+                  <Button variant="primary" className="flex-1 text-xs font-semibold py-5" asChild>
+                    <Link href={`/wedding/new?template=${theme.id}`}>
+                      Use Template
+                      <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
                     </Link>
                   </Button>
                 </div>

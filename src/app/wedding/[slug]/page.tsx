@@ -8,14 +8,21 @@ import { formatDate } from "@/lib/utils";
 import { Heart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { getTemplateById } from "@/lib/templates";
+
 interface WeddingPageProps {
   params: {
     slug: string;
   };
+  searchParams?: {
+    theme?: string;
+  };
 }
 
-export default async function WeddingPublicPage({ params }: WeddingPageProps) {
+export default async function WeddingPublicPage({ params, searchParams }: WeddingPageProps) {
   const { slug } = params;
+  const requestedTheme = searchParams?.theme;
+  const templateConfig = requestedTheme ? getTemplateById(requestedTheme) : null;
   const supabase = await createClient();
 
   // Fetch published wedding by slug
@@ -27,12 +34,15 @@ export default async function WeddingPublicPage({ params }: WeddingPageProps) {
 
   const wedding = rawWedding as unknown as TableRow<"weddings"> | null;
 
-  // If in local development or wedding not found, provide the full interactive preview
-  if (error || !wedding) {
+  // If in local development, template preview, or wedding not found, provide the full interactive preview
+  if (error || !wedding || templateConfig) {
+    const displaySections = templateConfig ? templateConfig.sections : DEFAULT_PAGE_SECTIONS;
+    const coupleTitle = templateConfig ? templateConfig.sampleCouple : "Sarah & James";
+
     return (
       <div className="min-h-screen bg-neutral-surface text-neutral-dark font-sans selection:bg-primary/20 selection:text-primary-deep">
         {/* Luxury Top Bar */}
-        <header className="border-b border-border/60 bg-white/80 backdrop-blur-md px-6 py-3.5 sticky top-0 z-40">
+        <header className="border-b border-border/60 bg-white/90 backdrop-blur-md px-6 py-3.5 sticky top-0 z-40 shadow-soft-sm">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <Link
               href="/"
@@ -44,10 +54,34 @@ export default async function WeddingPublicPage({ params }: WeddingPageProps) {
               <span className="font-display">EverAfter</span>
             </Link>
 
+            {/* Quick theme toggles */}
+            <div className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-neutral-light border border-border text-xs">
+              <span className="text-[10px] uppercase font-semibold text-neutral-mid px-2">Theme:</span>
+              {[
+                { id: "chateau", label: "Château" },
+                { id: "tuscan", label: "Tuscan" },
+                { id: "noir", label: "Noir" },
+              ].map((t) => (
+                <Link
+                  key={t.id}
+                  href={`/wedding/${slug}?theme=${t.id}`}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                    (requestedTheme || "chateau") === t.id
+                      ? "bg-neutral-dark text-white font-semibold shadow-soft-sm"
+                      : "text-neutral-mid hover:text-neutral-dark"
+                  }`}
+                >
+                  {t.label}
+                </Link>
+              ))}
+            </div>
+
             <div className="flex items-center gap-3">
-              <span className="text-[11px] uppercase tracking-widest px-3 py-1 rounded-full bg-primary/10 text-primary-deep font-semibold border border-primary/20">
-                Interactive Preview
-              </span>
+              <Button size="sm" variant="secondary" asChild className="text-xs">
+                <Link href={`/wedding/new?template=${requestedTheme || "chateau"}`}>
+                  Use Design
+                </Link>
+              </Button>
               <Button size="sm" asChild className="hidden sm:inline-flex shadow-soft-sm text-xs">
                 <Link href={`/wedding/${slug}/rsvp`}>RSVP Online</Link>
               </Button>
@@ -57,7 +91,7 @@ export default async function WeddingPublicPage({ params }: WeddingPageProps) {
 
         <main>
           <SectionRenderer
-            sections={DEFAULT_PAGE_SECTIONS}
+            sections={displaySections}
             weddingSlug={slug}
           />
         </main>

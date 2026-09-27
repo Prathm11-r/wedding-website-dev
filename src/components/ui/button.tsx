@@ -18,29 +18,30 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /** Solid gold — primary call-to-action */
+        /** Solid luxury gold gradient — primary call-to-action */
         primary: [
-          "bg-primary text-white shadow-soft-sm",
-          "hover:bg-primary-dark hover:shadow-soft-md",
-          "active:scale-[0.98]",
+          "bg-gradient-to-r from-[#F0D59E] via-[#DDB872] to-[#B58A3E] text-[#1C150B] font-semibold shadow-soft-md shadow-[#C9A96E]/30",
+          "hover:brightness-105 hover:shadow-lg hover:shadow-[#C9A96E]/40 hover:-translate-y-0.5",
+          "active:scale-[0.98] active:translate-y-0",
+          "border border-[#FFF4D4]/40",
         ],
-        /** Outlined gold — secondary actions */
+        /** Luxury frosted pill — secondary actions */
         secondary: [
-          "border-2 border-primary text-primary bg-transparent",
-          "hover:bg-primary hover:text-white",
-          "active:scale-[0.98]",
+          "border border-[#C9A96E]/50 text-neutral-dark bg-white/90 backdrop-blur-md shadow-soft-sm",
+          "hover:bg-white hover:border-[#C9A96E] hover:text-primary-deep hover:shadow-soft-md hover:-translate-y-0.5",
+          "active:scale-[0.98] active:translate-y-0",
         ],
         /** No background — tertiary / navigation links */
         ghost: [
-          "bg-transparent text-neutral-dark",
-          "hover:bg-neutral-light hover:text-neutral-dark",
+          "bg-transparent text-neutral-dark font-medium",
+          "hover:bg-neutral-light/80 hover:text-primary-deep",
           "active:scale-[0.98]",
         ],
-        /** Outlined with neutral colour — less prominent action */
+        /** Outlined with subtle gold tint */
         outline: [
-          "border border-border bg-transparent text-neutral-dark",
-          "hover:bg-neutral-light",
-          "active:scale-[0.98]",
+          "border border-border/80 bg-white/80 backdrop-blur-sm text-neutral-dark font-medium shadow-soft-sm",
+          "hover:bg-white hover:border-[#C9A96E]/60 hover:text-primary-deep hover:shadow-soft-md hover:-translate-y-0.5",
+          "active:scale-[0.98] active:translate-y-0",
         ],
         /** Destructive actions (delete, cancel subscription, etc.) */
         destructive: [
@@ -50,18 +51,18 @@ const buttonVariants = cva(
         ],
         /** Looks like a hyperlink */
         link: [
-          "text-primary underline-offset-4",
+          "text-primary-deep underline-offset-4 font-medium",
           "hover:underline",
           "p-0 h-auto",
         ],
       },
       size: {
-        sm: "h-8 px-3 text-sm rounded-md gap-1.5",
-        md: "h-10 px-4 text-sm",
-        lg: "h-12 px-6 text-base",
-        xl: "h-14 px-8 text-lg",
-        icon: "h-10 w-10 p-0",
-        "icon-sm": "h-8 w-8 p-0 rounded-md",
+        sm: "h-9 px-3.5 text-xs rounded-xl gap-1.5",
+        md: "h-11 px-5 text-sm rounded-xl gap-2",
+        lg: "h-13 px-8 text-sm sm:text-base rounded-2xl gap-2.5",
+        xl: "h-14 px-9 text-base rounded-2xl gap-3",
+        icon: "h-10 w-10 p-0 rounded-xl",
+        "icon-sm": "h-8 w-8 p-0 rounded-lg",
       },
     },
     defaultVariants: {
