@@ -70,4 +70,88 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* ── 3D Perspective & Spatial Depth ── */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .perspective-1500 {
+    perspective: 1500px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .transform-3d-card {
+    transform: rotateX(8deg) rotateY(-8deg) rotateZ(1deg);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transform-3d-card:hover {
+    transform: rotateX(2deg) rotateY(-2deg) rotateZ(0deg) translateY(-8px);
+  }
+
+  .translate-z-10 {
+    transform: translateZ(10px);
+  }
+
+  .translate-z-20 {
+    transform: translateZ(20px);
+  }
+
+  .translate-z-30 {
+    transform: translateZ(30px);
+  }
+
+  /* ── Luxury Gold & Foil Effects ── */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #ECC880 0%, #C9A96E 50%, #9F7A38 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gold-foil {
+    background: linear-gradient(110deg, #9F7A38 0%, #ECC880 25%, #FFF8E7 50%, #C9A96E 75%, #8B6828 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+
+  .bg-gold-foil-subtle {
+    background: linear-gradient(135deg, rgba(201, 169, 110, 0.12) 0%, rgba(232, 213, 196, 0.18) 50%, rgba(201, 169, 110, 0.08) 100%);
+  }
+
+  .border-gold-glow {
+    border-color: rgba(201, 169, 110, 0.35);
+    box-shadow: 0 0 15px rgba(201, 169, 110, 0.2);
+  }
+
+  /* ── Tactile Glass & Paper Depth ── */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 20px 40px -15px rgba(28, 28, 28, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .glass-card-dark {
+    background: rgba(28, 28, 28, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .wax-seal {
+    background: radial-gradient(circle at 35% 35%, #E2CAAA 0%, #C9A96E 40%, #8A6424 100%);
+    box-shadow: 0 8px 18px -2px rgba(138, 100, 36, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  }
 }

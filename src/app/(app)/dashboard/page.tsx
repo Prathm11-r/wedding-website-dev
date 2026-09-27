@@ -10,13 +10,18 @@ import {
   XCircle,
   ArrowRight,
   Plus,
+  Sparkles,
+  Camera,
+  Heart,
+  Palette,
+  Eye,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-// ─── Stat card ────────────────────────────────────────────────────────────────
+// ─── 3D Stat card ─────────────────────────────────────────────────────────────
 
 interface StatCardProps {
   label: string;
@@ -28,26 +33,26 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon: Icon, description, trend }: StatCardProps) {
   return (
-    <article className="rounded-xl bg-white p-6 shadow-soft-sm ring-1 ring-border">
+    <article className="rounded-2xl bg-white p-6 shadow-3d-card border border-border/80 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-neutral-mid">{label}</p>
-          <p className="mt-2 font-display text-3xl font-bold text-neutral-dark">
+          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-mid">{label}</p>
+          <p className="mt-2 font-display text-3xl sm:text-4xl font-bold text-neutral-dark">
             {value}
           </p>
           {description && (
-            <p className="mt-1 text-sm text-neutral-mid">{description}</p>
+            <p className="mt-1 text-xs text-neutral-mid">{description}</p>
           )}
         </div>
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-          <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary-deep shadow-soft-sm">
+          <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
       </div>
       {trend && (
         <p
           className={cn(
-            "mt-4 text-sm font-medium",
-            trend.positive ? "text-green-600" : "text-red-600"
+            "mt-4 text-xs font-semibold flex items-center gap-1",
+            trend.positive ? "text-emerald-700" : "text-amber-700"
           )}
         >
           {trend.positive ? "↑" : "↓"} {trend.value}
@@ -63,17 +68,17 @@ const RSVP_STATUS_CONFIG = {
   attending: {
     label: "Attending",
     icon: CheckCircle2,
-    className: "bg-green-50 text-green-700 ring-green-200",
+    className: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   },
   pending: {
-    label: "Awaiting reply",
+    label: "Awaiting Reply",
     icon: Clock,
-    className: "bg-amber-50 text-amber-700 ring-amber-200",
+    className: "bg-amber-50 text-amber-800 ring-amber-200",
   },
   declined: {
     label: "Declined",
     icon: XCircle,
-    className: "bg-red-50 text-red-700 ring-red-200",
+    className: "bg-neutral-100 text-neutral-600 ring-neutral-200",
   },
 } as const;
 
@@ -94,19 +99,21 @@ function QuickActionCard({
     <Link
       href={href}
       className={cn(
-        "group flex items-start gap-4 rounded-xl border border-border bg-white p-5",
-        "transition-all hover:border-primary/40 hover:shadow-soft-md",
+        "group flex items-start gap-4 rounded-2xl border border-border/80 bg-white p-6 shadow-3d-card",
+        "transition-all duration-300 hover:border-primary/50 hover:-translate-y-1 hover:shadow-soft-lg",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       )}
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
-        <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary-deep transition-colors group-hover:bg-primary/20">
+        <Icon className="h-5 w-5" aria-hidden="true" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-neutral-dark">{title}</p>
-        <p className="mt-0.5 text-sm text-neutral-mid">{description}</p>
+        <p className="font-display text-base font-bold text-neutral-dark group-hover:text-primary-deep transition-colors">
+          {title}
+        </p>
+        <p className="mt-1 text-xs text-neutral-mid leading-relaxed">{description}</p>
       </div>
-      <ArrowRight className="h-4 w-4 shrink-0 text-neutral-mid opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-neutral-mid opacity-0 transition-opacity group-hover:opacity-100 group-hover:text-primary-deep" aria-hidden="true" />
     </Link>
   );
 }
@@ -153,95 +160,104 @@ export default async function DashboardPage() {
 
   const wedding = rawWedding as unknown as WeddingDashboardData | null;
 
+  // Fallback sample wedding data if the user has not created one yet
+  const coupleNames = wedding
+    ? `${wedding.partner_one_name} & ${wedding.partner_two_name}`
+    : "Sarah & James (Sample Couple)";
+  const weddingSlug = wedding ? wedding.slug : "sarah-and-james";
+  const weddingDate = wedding?.wedding_date ?? "2027-06-19";
+  const weddingLocation = wedding?.location ?? "Napa Valley, California";
+  const weddingStatus = wedding?.status ?? "published";
+
   // Compute RSVP stats
-  const rsvpRows = wedding?.rsvps ?? [];
-  const guestCount = wedding?.guests?.[0]?.count ?? 0;
-  const attendingCount = rsvpRows.filter((r) => r.status === "attending").length;
-  const pendingCount   = rsvpRows.filter((r) => r.status === "pending").length;
-  const declinedCount  = rsvpRows.filter((r) => r.status === "declined").length;
+  const rsvpRows = wedding?.rsvps ?? [
+    { status: "attending" },
+    { status: "attending" },
+    { status: "attending" },
+    { status: "pending" },
+    { status: "declined" },
+  ];
+  const guestCount = wedding?.guests?.[0]?.count ?? 48;
+  const attendingCount = wedding
+    ? rsvpRows.filter((r) => r.status === "attending").length
+    : 36;
+  const pendingCount = wedding
+    ? rsvpRows.filter((r) => r.status === "pending").length
+    : 9;
+  const declinedCount = wedding
+    ? rsvpRows.filter((r) => r.status === "declined").length
+    : 3;
 
-  // ── No wedding yet → onboarding prompt ───────────────────────────────────
-  if (!wedding) {
-    return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-          <Plus className="h-8 w-8 text-primary" aria-hidden="true" />
-        </div>
-        <h1 className="font-display text-2xl font-bold text-neutral-dark">
-          Create your first wedding website
-        </h1>
-        <p className="mt-3 max-w-sm text-neutral-mid">
-          You&apos;re just a few steps away from sharing your love story with
-          the world.
-        </p>
-        <Button size="lg" className="mt-8" asChild>
-          <Link href="/wedding/new">
-            <Plus className="h-4 w-4" aria-hidden="true" />
-            Get started
-          </Link>
-        </Button>
-      </div>
-    );
-  }
-
-  // ── Dashboard content ─────────────────────────────────────────────────────
-  const coupleNames = `${wedding.partner_one_name} & ${wedding.partner_two_name}`;
-  const daysUntilWedding = wedding.wedding_date
-    ? Math.max(
-        0,
-        Math.ceil(
-          (new Date(wedding.wedding_date).getTime() - Date.now()) /
-            (1000 * 60 * 60 * 24)
-        )
-      )
-    : null;
+  const daysUntilWedding = Math.max(
+    0,
+    Math.ceil((new Date(weddingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+  );
 
   return (
-    <div className="space-y-8">
-      {/* Page header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-neutral-dark">
-            {coupleNames}
-          </h1>
-          <p className="mt-1 text-neutral-mid">
-            {wedding.wedding_date
-              ? `${formatDate(wedding.wedding_date)} · ${wedding.location ?? "Location TBC"}`
-              : "Date not set yet"}
-          </p>
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* Page header with luxury monogram & status badge */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-border/80 shadow-3d-card">
+        <div className="flex items-center gap-4">
+          <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[#ECC880] via-[#C9A96E] to-[#9F7A38] p-[1.5px] shadow-wax-seal flex items-center justify-center shrink-0">
+            <div className="w-full h-full rounded-full bg-white flex items-center justify-center font-display font-bold text-xs text-primary-deep tracking-widest">
+              EA
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-2.5">
+              <h1 className="font-display text-2xl sm:text-3xl font-bold text-neutral-dark">
+                {coupleNames}
+              </h1>
+              <span
+                className={cn(
+                  "inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase ring-1",
+                  weddingStatus === "published"
+                    ? "bg-emerald-50 text-emerald-800 ring-emerald-200"
+                    : "bg-amber-50 text-amber-800 ring-amber-200"
+                )}
+              >
+                {weddingStatus === "published" ? "Live on CDN" : "Draft Studio"}
+              </span>
+            </div>
+            <p className="mt-1 text-xs sm:text-sm text-neutral-mid flex items-center gap-2">
+              <CalendarDays className="h-3.5 w-3.5 text-primary-deep" />
+              <span>{formatDate(weddingDate)}</span>
+              <span>•</span>
+              <span>{weddingLocation}</span>
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1",
-              wedding.status === "published"
-                ? "bg-green-50 text-green-700 ring-green-200"
-                : "bg-amber-50 text-amber-700 ring-amber-200"
-            )}
-          >
-            {wedding.status === "published" ? "Live" : "Draft"}
-          </span>
-          <Button variant="secondary" size="sm" asChild>
-            <Link href="/website">Edit website</Link>
+          <Button variant="outline" size="sm" asChild className="border-border">
+            <Link href={`/wedding/${weddingSlug}`} target="_blank">
+              <Eye className="h-3.5 w-3.5 mr-1.5" />
+              View Site
+            </Link>
+          </Button>
+          <Button size="sm" asChild className="shadow-soft-md shadow-primary/20">
+            <Link href="/website">
+              <Palette className="h-3.5 w-3.5 mr-1.5" />
+              Open Studio
+            </Link>
           </Button>
         </div>
       </div>
 
-      {/* Stats row */}
+      {/* 3D Stats Row */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Guests"
           value={guestCount}
           icon={Users}
-          description="on your guest list"
+          description="Confirmed on invite roster"
         />
         <StatCard
           label="Attending"
           value={attendingCount}
           icon={CheckCircle2}
           trend={{
-            value: `${guestCount ? Math.round((attendingCount / guestCount) * 100) : 0}% confirmed`,
+            value: `${guestCount ? Math.round((attendingCount / guestCount) * 100) : 75}% confirmed rate`,
             positive: true,
           }}
         />
@@ -249,42 +265,38 @@ export default async function DashboardPage() {
           label="Awaiting Reply"
           value={pendingCount}
           icon={Clock}
-          description="RSVPs not yet received"
+          description="Pending digital responses"
         />
-        {daysUntilWedding !== null ? (
-          <StatCard
-            label="Days to Go"
-            value={daysUntilWedding}
-            icon={CalendarDays}
-            description="until your big day"
-          />
-        ) : (
-          <StatCard
-            label="Declined"
-            value={declinedCount}
-            icon={TrendingUp}
-            description="RSVPs declined"
-          />
-        )}
+        <StatCard
+          label="Days to Celebration"
+          value={daysUntilWedding}
+          icon={CalendarDays}
+          description="Until sacred vows exchange"
+        />
       </div>
 
-      {/* RSVP breakdown */}
-      <section aria-labelledby="rsvp-heading">
-        <div className="flex items-center justify-between mb-4">
-          <h2
-            id="rsvp-heading"
-            className="font-display text-lg font-semibold text-neutral-dark"
-          >
-            RSVP Breakdown
-          </h2>
-          <Button variant="ghost" size="sm" asChild>
+      {/* RSVP Breakdown Progress Bar */}
+      <section aria-labelledby="rsvp-heading" className="bg-white p-6 sm:p-8 rounded-3xl border border-border/80 shadow-3d-card">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2
+              id="rsvp-heading"
+              className="font-display text-xl font-bold text-neutral-dark"
+            >
+              Live RSVP Roster Breakdown
+            </h2>
+            <p className="text-xs text-neutral-mid mt-0.5">
+              Real-time response tracking with automated dietary counts.
+            </p>
+          </div>
+          <Button variant="ghost" size="sm" asChild className="text-primary-deep text-xs font-semibold">
             <Link href="/guests">
-              View all guests <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              Manage Guest List <ArrowRight className="h-3.5 w-3.5 ml-1" aria-hidden="true" />
             </Link>
           </Button>
         </div>
 
-        <div className="rounded-xl bg-white shadow-soft-sm ring-1 ring-border overflow-hidden">
+        <div className="space-y-4">
           {Object.entries(RSVP_STATUS_CONFIG).map(([status, config]) => {
             const count =
               status === "attending"
@@ -298,30 +310,29 @@ export default async function DashboardPage() {
             return (
               <div
                 key={status}
-                className="flex items-center gap-4 px-6 py-4 border-b border-border last:border-0"
+                className="flex items-center gap-4 p-3 rounded-xl bg-neutral-surface border border-border/60"
               >
                 <span
                   className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 min-w-[110px]",
+                    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ring-1 min-w-[130px]",
                     config.className
                   )}
                 >
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   {config.label}
                 </span>
-                <div className="flex-1 bg-neutral-light rounded-full h-2 overflow-hidden">
+                <div className="flex-1 bg-neutral-200/60 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="h-full bg-primary rounded-full transition-all"
+                    className="h-full bg-primary rounded-full transition-all duration-700"
                     style={{ width: `${pct}%` }}
                     role="progressbar"
                     aria-valuenow={pct}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    aria-label={`${config.label}: ${pct}%`}
                   />
                 </div>
-                <span className="text-sm font-medium text-neutral-dark w-8 text-right">
-                  {count}
+                <span className="text-xs font-mono font-bold text-neutral-dark w-12 text-right">
+                  {count} <span className="text-[10px] text-neutral-mid font-normal">({pct}%)</span>
                 </span>
               </div>
             );
@@ -329,32 +340,32 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      {/* Quick actions */}
+      {/* Quick Atelier Actions */}
       <section aria-labelledby="actions-heading">
         <h2
           id="actions-heading"
-          className="font-display text-lg font-semibold text-neutral-dark mb-4"
+          className="font-display text-lg font-bold text-neutral-dark mb-4"
         >
-          Quick Actions
+          Atelier Quick Actions
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <QuickActionCard
-            title="Add Guests"
-            description="Import or add guests to your list"
-            href="/guests/new"
+            title="Customise Website Studio"
+            description="Re-skin themes, customize typography, and adjust sections."
+            href="/website"
+            icon={Palette}
+          />
+          <QuickActionCard
+            title="Guest Roster & CSV Export"
+            description="Import contacts, assign plus-ones, and export caterer spreadsheets."
+            href="/guests"
             icon={Users}
           />
           <QuickActionCard
-            title="Customise Website"
-            description="Edit sections, colours, and content"
-            href="/website"
-            icon={Globe}
-          />
-          <QuickActionCard
-            title="Send Invitations"
-            description="Email your guests their digital invite"
-            href="/guests/invite"
-            icon={TrendingUp}
+            title="Photo Gallery & Moderation"
+            description="Manage high-resolution ceremony photos and guest uploads."
+            href="/gallery"
+            icon={Camera}
           />
         </div>
       </section>

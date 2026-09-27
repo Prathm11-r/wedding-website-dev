@@ -7,34 +7,45 @@ import { Button } from "@/components/ui/button";
 function MarketingNavbar() {
   const navLinks = [
     { label: "Features",  href: "/#features" },
-    { label: "Templates", href: "/templates" },
+    { label: "Themes & 3D Studio", href: "/#themes" },
+    { label: "Live RSVP Engine", href: "/#rsvp-preview" },
     { label: "Pricing",   href: "/pricing" },
-    { label: "Examples",  href: "/examples" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3"
+        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4"
         aria-label="Main navigation"
       >
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 font-display text-xl font-bold text-neutral-dark"
+          className="flex items-center gap-3 group"
           aria-label="EverAfter home"
         >
-          <Heart className="h-5 w-5 fill-primary text-primary" aria-hidden="true" />
-          EverAfter
+          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#ECC880] via-[#C9A96E] to-[#9F7A38] p-[1.5px] shadow-soft-sm transition-transform group-hover:scale-105">
+            <div className="w-full h-full rounded-full bg-white flex items-center justify-center font-display font-bold text-xs text-primary-deep tracking-wider">
+              EA
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display text-xl font-bold tracking-tight text-neutral-dark">
+              EverAfter
+            </span>
+            <span className="text-[10px] tracking-widest uppercase text-primary-deep font-medium -mt-1">
+              Atelier & SaaS
+            </span>
+          </div>
         </Link>
 
         {/* Desktop nav links */}
-        <ul className="hidden items-center gap-6 md:flex" role="list">
+        <ul className="hidden items-center gap-8 md:flex" role="list">
           {navLinks.map(({ label, href }) => (
             <li key={label}>
               <Link
                 href={href}
-                className="text-sm font-medium text-neutral-mid transition-colors hover:text-neutral-dark"
+                className="text-sm font-medium text-neutral-mid transition-colors hover:text-primary-deep"
               >
                 {label}
               </Link>
@@ -42,13 +53,20 @@ function MarketingNavbar() {
           ))}
         </ul>
 
-        {/* Auth CTAs */}
+        {/* Auth & Demo CTAs */}
         <div className="flex items-center gap-3">
+          <Link
+            href="/wedding/sarah-and-james"
+            target="_blank"
+            className="hidden sm:inline-flex items-center text-xs font-semibold text-primary-deep px-3 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20"
+          >
+            Live Couple Preview ↗
+          </Link>
           <Button variant="ghost" size="sm" asChild>
             <Link href="/auth/login">Log in</Link>
           </Button>
-          <Button size="sm" asChild>
-            <Link href="/auth/signup">Get started</Link>
+          <Button size="sm" className="shadow-soft-md shadow-primary/20" asChild>
+            <Link href="/auth/signup">Get Started</Link>
           </Button>
         </div>
       </nav>

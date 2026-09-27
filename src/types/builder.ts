@@ -205,9 +205,36 @@ export const DEFAULT_PAGE_SECTIONS: PageSectionModel[] = [
     },
   },
   {
+    id: "sec-gallery",
+    type: "gallery",
+    sort_order: 4,
+    is_visible: true,
+    props: {
+      heading: "Captured Moments",
+      subheading: "Memories along our journey",
+      images: [
+        {
+          id: "g-1",
+          url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+          caption: "Under the golden hour sun",
+        },
+        {
+          id: "g-2",
+          url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+          caption: "The first dance",
+        },
+        {
+          id: "g-3",
+          url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80",
+          caption: "Champagne celebration",
+        },
+      ],
+    },
+  },
+  {
     id: "sec-registry",
     type: "registry",
-    sort_order: 4,
+    sort_order: 5,
     is_visible: true,
     props: {
       heading: "Gift Registry",
@@ -232,7 +259,7 @@ export const DEFAULT_PAGE_SECTIONS: PageSectionModel[] = [
   {
     id: "sec-rsvp",
     type: "rsvp",
-    sort_order: 5,
+    sort_order: 6,
     is_visible: true,
     props: {
       heading: "Kindly RSVP",
