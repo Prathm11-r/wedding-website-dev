@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-playfair: 'Playfair Display', Georgia, serif;
+
+    /* Brand Colors */
+    --primary: 201 169 110;
+    --primary-dark: 160 120 64;
+    --primary-light: 226 202 170;
+
+    /* Neutrals */
+    --neutral-dark: 28 28 28;
+    --neutral-mid: 107 107 107;
+    --neutral-light: 247 244 240;
+
+    /* System Tokens */
+    --background: 247 244 240;
+    --foreground: 28 28 28;
+    --card: 255 255 255;
+    --card-foreground: 28 28 28;
+    --popover: 255 255 255;
+    --popover-foreground: 28 28 28;
+    --border: 228 222 218;
+    --input: 228 222 218;
+    --ring: 201 169 110;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 18 18 18;
+    --foreground: 240 237 233;
+    --card: 30 30 30;
+    --card-foreground: 240 237 233;
+    --popover: 30 30 30;
+    --popover-foreground: 240 237 233;
+    --border: 58 58 58;
+    --input: 58 58 58;
+    --ring: 201 169 110;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-neutral-dark;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C9A96E;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
