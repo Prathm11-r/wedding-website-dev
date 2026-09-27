@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-09-27 — Sprint 1: Dynamic Section Builder Engine, Multi-Day Events & Super Admin Portal
+
+### Added
+- **Component-Driven Section Builder Engine:**
+  - `src/types/builder.ts` — Defined JSON schema and models for `hero`, `countdown`, `our_story`, `schedule`, `gallery`, `registry`, `rsvp`, and `contact` sections.
+  - Section components in `src/components/sections/`:
+    - `HeroSection.tsx` (responsive hero with overlay, couple names, and countdown/date badges)
+    - `CountdownSection.tsx` (real-time ticking clock with days, hours, minutes, seconds)
+    - `OurStorySection.tsx` (milestone narrative, photo showcase, and couple quote)
+    - `ScheduleSection.tsx` (multi-event wedding day itinerary with locations and dress codes)
+    - `RegistrySection.tsx` (curated retail and honeymoon fund cards with external links)
+    - `GallerySection.tsx` (responsive masonry grid for wedding photography)
+    - `RsvpSection.tsx` (online RSVP CTA with deadline indicator)
+    - `SectionRenderer.tsx` (master JSON-to-Component engine rendering dynamic tenant layouts)
+- **Interactive Visual Website Builder:**
+  - `src/app/(app)/website/page.tsx` — Couple section customizer with reordering (move up/down), visibility toggles, property editor, and dual desktop/mobile live preview.
+- **Super Admin Platform Operations Surface:**
+  - `src/app/admin/layout.tsx` & `page.tsx` — Global platform overview displaying tenant count, active subscriptions, custom domain status, tenant inspection table, and cloud services health check.
+- **Database Schema Expansion:**
+  - `supabase/migrations/003_page_builder_and_admin.sql` — Super admins table, dynamic wedding pages, page sections, site templates, multi-day events, tokenized guest access (`invite_token`, `access_code`), and platform audit logs.
+
+---
+
 ## 2026-09-27 — Foundation Phase Complete: Full System Architecture & Application Scaffold
 
 ### Added

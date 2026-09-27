@@ -14,11 +14,13 @@ EverAfter removes the technical burden from couples — no code, no design skill
 
 ## 2. Product / Service Description
 
-A web-based SaaS platform with two primary product surfaces:
+A web-based SaaS platform with four primary product surfaces:
 
 1. **Couple Dashboard** — Private workspace where couples build and manage their wedding website, guest list, RSVPs, seating chart, photo gallery, registry links, and wedding day timeline.
-2. **Couple's Public Wedding Website** — A beautiful, fully customizable public-facing website hosted on a subdomain (e.g., `jane-and-john.everafter.com`) or custom domain (paid), accessible by guests.
-3. **Planner Dashboard** (paid tier) — A professional view for wedding planners to manage and switch between multiple couple accounts.
+2. **Interactive Website Builder** (`/app/website`) — Visual drag-and-drop section customizer (hero, story, schedule, gallery, registry, countdown, RSVP) backed by a JSON-based page schema with real-time responsive preview.
+3. **Couple's Public Wedding Website** — A beautiful, fully customizable public-facing website hosted on a subdomain (e.g., `jane-and-john.everafter.com`) or custom domain (paid), accessible by guests.
+4. **Planner Dashboard** (paid tier) — A professional view for wedding planners to manage and switch between multiple couple accounts.
+5. **Super Admin Platform Portal** (`/admin`) — Platform owner operations center managing tenants, subscription activations, infrastructure health, and global template libraries.
 
 ---
 
